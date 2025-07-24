@@ -1,11 +1,22 @@
-import { Link } from 'react-router';
-import { products } from '../../../../starting-code/data/products';
+import {  Link } from 'react-router';
+import axios from 'axios'
+import { useEffect,useState } from 'react';
 import './homepage.css';
 import './header.css';
 
 
 
-export function HomePage() {
+export function HomePage({ cart }) {
+  const [products , setProducts] = useState([])
+  useEffect(()=>{
+    axios ("/api/products")
+  .then((Response)=>{
+    setProducts(Response.data)
+  },[])
+  })
+
+  
+  
   
   return (
     <>
@@ -35,7 +46,7 @@ export function HomePage() {
 
           <a className="cart-link header-link" href="/checkout">
             <img className="cart-icon" src="images/icons/cart-icon.png" />
-            <div className="cart-quantity">3</div>
+            <div className="cart-quantity">{cart.length}</div>
             <div className="cart-text">Cart</div>
           </a>
         </div>

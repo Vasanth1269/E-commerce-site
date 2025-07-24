@@ -7,15 +7,16 @@ import './header.css';
 
 
 export function HomePage({ cart }) {
-  const [products , setProducts] = useState([])
+  
+  const [products , setProducts] = useState([]);
   useEffect(()=>{
     axios ("/api/products")
   .then((Response)=>{
     setProducts(Response.data)
+  },)
   },[])
-  })
 
-  
+  console.log(cart)
   
   
   return (

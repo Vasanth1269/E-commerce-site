@@ -9,13 +9,13 @@ import './App.css'
 
 function App() {
   const [cart , setCart] = useState([])
+  
    useEffect(()=>{
-    axios ("/api/cart-items?expand=product")
-    .then((Response)=>{
+    const getCartData = async ()=>{
+   const Response = await axios ("/api/cart-items?expand=product")
       setCart(Response.data)
-      
-      
-    },);
+  }
+     getCartData()
    },[])
    
    
@@ -23,7 +23,7 @@ function App() {
     <Routes>
       <Route  index element={ <HomePage cart = {cart} />} />
       <Route path='checkout' element = {<CheckOut cart = {cart}/>} />
-      <Route path='orders' element = {<Orders />} />
+      <Route path='orders' element = {<Orders cart = {cart} />} />
       <Route path='tracking' element = {<TrackingPage />} />
       
       

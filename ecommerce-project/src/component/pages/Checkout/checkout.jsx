@@ -9,15 +9,24 @@
 
 export function CheckOut({ cart }) {
   const [deliveryOptions , setDeliveryOptions] = useState([])
+  const [paymentsummary , setPaymentsummary] = useState([])
  useEffect (() =>{
-  axios('/api/delivery-options?expand=estimatedDeliveryTime')
-    .then((Response)=>{
+  const getCheckoutData = async ()=>{
+   let Response = await  axios('/api/delivery-options?expand=estimatedDeliveryTime')
+    
         setDeliveryOptions(Response.data)
-    })
-   
-   
+  
+
+    Response = await axios ('/api/payment-summary')
+      setPaymentsummary(Response.data);
+    
+  }
+  getCheckoutData
  },[])
-  console.log(deliveryOptions)
+
+   
+  console.log(paymentsummary)
+
  
 return (
     <>
@@ -119,41 +128,42 @@ return (
           })}
           
         </div>
-
-        <div className="payment-summary">
+          
+                     <div className="payment-summary">
             <div className="payment-summary-title">
               Payment Summary
             </div>
 
             <div className="payment-summary-row">
-              <div>Items (3):</div>
-              <div className="payment-summary-money">$42.75</div>
+              <div>Items ({paymentsummary.totalItems}):</div>
+              <div className="payment-summary-money">{MoneyFormat(paymentsummary.productCostCents)}</div>
             </div>
 
             <div className="payment-summary-row">
               <div>Shipping &amp; handling:</div>
-              <div className="payment-summary-money">$4.99</div>
+              <div className="payment-summary-money">{MoneyFormat( paymentsummary.shippingCostCents)}</div>
             </div>
 
             <div className="payment-summary-row subtotal-row">
               <div>Total before tax:</div>
-              <div className="payment-summary-money">$47.74</div>
+              <div className="payment-summary-money">{MoneyFormat(paymentsummary.totalCostBeforeTaxCents)}</div>
             </div>
 
             <div className="payment-summary-row">
               <div>Estimated tax (10%):</div>
-              <div className="payment-summary-money">$4.77</div>
+              <div className="payment-summary-money">{MoneyFormat(paymentsummary.taxCents)}</div>
             </div>
 
             <div className="payment-summary-row total-row">
               <div>Order total:</div>
-              <div className="payment-summary-money">$52.51</div>
+          <div className="payment-summary-money">{MoneyFormat(paymentsummary.totalCostCents)}</div>
             </div>
 
             <button className="place-order-button button-primary">
               Place your order
             </button>
         </div>
+
       </div>
     </div>
     </>

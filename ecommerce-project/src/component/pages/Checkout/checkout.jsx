@@ -1,10 +1,24 @@
   import './Checkout-header.css';
   import './checkout.css';
+  import dayjs from 'dayjs';
+  import { useEffect ,useState } from 'react';
+  import  axios  from 'axios';
   import { Link } from 'react-router';
+  import { MoneyFormat } from '../../../utils/MoneyFormat';
 
 
 export function CheckOut({ cart }) {
-  
+  const [deliveryOptions , setDeliveryOptions] = useState([])
+ useEffect (() =>{
+  axios('/api/delivery-options?expand=estimatedDeliveryTime')
+    .then((Response)=>{
+        setDeliveryOptions(Response.data)
+    })
+   
+   
+ },[])
+  console.log(deliveryOptions)
+ 
 return (
     <>
     <div className="checkout-header">
@@ -33,12 +47,14 @@ return (
       <div className="checkout-grid">
         <div className="order-summary">
           {cart.map((CartItem)=>{
-             
+              const selectdeliveryOption = deliveryOptions.find((deliveryOption)=>{
+                    return deliveryOption.id === CartItem.deliveryOptionId;
+                  });
             return(
               
               <div key={CartItem.product.id} className="cart-item-container">
             <div className="delivery-date">
-              Delivery date: Tuesday, June 21
+              Delivery date: {dayjs(selectdeliveryOption.estimatedDeliveryTimeMs).format("dddd MMMM D")}
             </div>
 
             <div className="cart-item-details-grid">
@@ -50,11 +66,11 @@ return (
                   {CartItem.product.name}
                 </div>
                 <div className="product-price">
-                  ${(CartItem.product.priceCents/100).toFixed(2)}
+                  {MoneyFormat(CartItem.product.priceCents)}
                 </div>
                 <div className="product-quantity">
                   <span>
-                    Quantity: <span className="quantity-label">2</span>
+                    Quantity: <span className="quantity-label">{CartItem.quantity}</span>
                   </span>
                   <span className="update-quantity-link link-primary">
                     Update
@@ -69,45 +85,33 @@ return (
                 <div className="delivery-options-title">
                   Choose a delivery option:
                 </div>
-                <div className="delivery-option">
-                  <input type="radio" defaultChecked
+                      
+                {deliveryOptions.length >0 && deliveryOptions.map((deliveryOption)=>{
+                 
+                    let Shppingprice = "FREE Shipping"
+
+                    if (deliveryOption.priceCents > 0) {
+                      Shppingprice = `${MoneyFormat(deliveryOption.priceCents)}-Shipping`
+
+                    }
+                  return(
+                  <div key= {deliveryOption.id} className="delivery-option">
+                  <input type="radio" checked = {deliveryOption.id === CartItem.deliveryOptionId}
+                 
                     className="delivery-option-input"
-                    name="delivery-option-1" />
+                    name={`delivery-option-${CartItem.productId}`} />
                   <div>
                     <div className="delivery-option-date">
-                      Tuesday, June 21
+                      {dayjs(deliveryOption.estimatedDeliveryTimeMs).format("dddd MMMM  D")}
                     </div>
                     <div className="delivery-option-price">
-                      FREE Shipping
+                      {Shppingprice}
                     </div>
                   </div>
                 </div>
-                <div className="delivery-option">
-                  <input type="radio"
-                    className="delivery-option-input"
-                    name="delivery-option-1" />
-                  <div>
-                    <div className="delivery-option-date">
-                      Wednesday, June 15
-                    </div>
-                    <div className="delivery-option-price">
-                      $4.99 - Shipping
-                    </div>
-                  </div>
-                </div>
-                <div className="delivery-option">
-                  <input type="radio"
-                    className="delivery-option-input"
-                    name="delivery-option-1" />
-                  <div>
-                    <div className="delivery-option-date">
-                      Monday, June 13
-                    </div>
-                    <div className="delivery-option-price">
-                      $9.99 - Shipping
-                    </div>
-                  </div>
-                </div>
+                  )
+                })}
+              
               </div>
             </div>
           </div>

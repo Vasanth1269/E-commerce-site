@@ -1,4 +1,5 @@
   import './Checkout-header.css';
+  import { useNavigate } from 'react-router';
   import './checkout.css';
   import dayjs from 'dayjs';
   import { useEffect ,useState } from 'react';
@@ -11,22 +12,23 @@ export function CheckOut({ cart }) {
   const [deliveryOptions , setDeliveryOptions] = useState([])
   const [paymentsummary , setPaymentsummary] = useState([])
  useEffect (() =>{
-  const getCheckoutData = async ()=>{
-   let Response = await  axios('/api/delivery-options?expand=estimatedDeliveryTime')
-    
-        setDeliveryOptions(Response.data)
+   axios('/api/delivery-options?expand=estimatedDeliveryTime')
+     .then ((Response)=>{
+       setDeliveryOptions(Response.data)
+     })
   
 
-    Response = await axios ('/api/payment-summary')
-      setPaymentsummary(Response.data);
-    
+         axios('/api/payment-summary')
+         .then ((Response)=>{
+            setPaymentsummary(Response.data);
+         })
+ },[cart]);
+  const Navigate = useNavigate()
+ const PlaceOrder = async()=> {
+    await axios.post('/api/orders')
+      Navigate('/orders');
   }
-  getCheckoutData
- },[])
-
-   
-  console.log(paymentsummary)
-
+  
  
 return (
     <>
@@ -56,6 +58,10 @@ return (
       <div className="checkout-grid">
         <div className="order-summary">
           {cart.map((CartItem)=>{
+             const deleteItems = async () =>{
+                     await axios.delete(`/api/cart-Items/${CartItem.productId}`)
+    
+   }
               const selectdeliveryOption = deliveryOptions.find((deliveryOption)=>{
                     return deliveryOption.id === CartItem.deliveryOptionId;
                   });
@@ -84,7 +90,7 @@ return (
                   <span className="update-quantity-link link-primary">
                     Update
                   </span>
-                  <span className="delete-quantity-link link-primary">
+                  <span className="delete-quantity-link link-primary" onClick={deleteItems }>
                     Delete
                   </span>
                 </div>
@@ -97,7 +103,12 @@ return (
                       
                 {deliveryOptions.length >0 && deliveryOptions.map((deliveryOption)=>{
                  
-                    let Shppingprice = "FREE Shipping"
+                    let Shppingprice = "FREE Shipping";
+                    const UpdatadeliveryOptions =  async()=>{
+                    await  axios.put(`/api/cart-items/${CartItem.productId}`,{
+                        deliveryOptionId:deliveryOption.id
+                      })
+                    }
 
                     if (deliveryOption.priceCents > 0) {
                       Shppingprice = `${MoneyFormat(deliveryOption.priceCents)}-Shipping`
@@ -105,7 +116,7 @@ return (
                     }
                   return(
                   <div key= {deliveryOption.id} className="delivery-option">
-                  <input type="radio" checked = {deliveryOption.id === CartItem.deliveryOptionId}
+                  <input type="radio" onClick={UpdatadeliveryOptions}  checked = {deliveryOption.id === CartItem.deliveryOptionId}
                  
                     className="delivery-option-input"
                     name={`delivery-option-${CartItem.productId}`} />
@@ -158,8 +169,9 @@ return (
               <div>Order total:</div>
           <div className="payment-summary-money">{MoneyFormat(paymentsummary.totalCostCents)}</div>
             </div>
+            
 
-            <button className="place-order-button button-primary">
+            <button className="place-order-button button-primary" onClick={PlaceOrder}>
               Place your order
             </button>
         </div>

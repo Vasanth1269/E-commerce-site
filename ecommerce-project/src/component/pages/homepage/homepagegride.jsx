@@ -2,12 +2,13 @@
 import axios from 'axios'
 import {useState } from 'react';
 
- export function HomeHTML({ product  , LoadingCart }) {
+ export function HomeHTML({ product   }) {
    const [quantity , setQuantity] = useState(1);
    return (
               <div key={product.id} className="product-container">
                 <div className="product-image-container">
                   <img className="product-image"
+                  data-testid="product-image"
                     src={product.image} />
                 </div>
 
@@ -17,6 +18,7 @@ import {useState } from 'react';
 
                 <div className="product-rating-container">
                   <img className="product-rating-stars"
+                  data-testid = "product-rating-stars"
                     src={`images/ratings/rating-${product.rating.stars * 10}.png`} />
                   <div className="product-rating-count link-primary">
                     {product.rating.count}
@@ -31,7 +33,7 @@ import {useState } from 'react';
                   <select  value={quantity} onChange={ async (Event)=>{
                    const selectvalue = Number(Event.target.value);
                    setQuantity(selectvalue)
-                     await LoadingCart();
+                     
                   }}>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -53,7 +55,9 @@ import {useState } from 'react';
                   Added
                 </div>
 
-                <button className="add-to-cart-button button-primary" onClick={ async()=>{
+                <button className="add-to-cart-button button-primary"
+                data-testid='add-to-cart-button'
+                 onClick={ async()=>{
                   await axios.post('/api/cart-Items',{
                     productId:product.id,
                     quantity:quantity 

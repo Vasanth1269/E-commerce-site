@@ -4,7 +4,9 @@ import './orders.css';
 import { Link } from 'react-router';
 import { useEffect, useState, Fragment } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router';
 export function Orders({ cart }) {
+    const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   useEffect(() => {
     const getOrderDate = async () => {
@@ -14,6 +16,17 @@ export function Orders({ cart }) {
     }
     getOrderDate()
   }, [])
+
+     const handleTrack = (orderId, productId) => {
+    navigate('/tracking', {
+      state: { orderId, productId }
+    });
+  };
+    
+
+
+
+
 
   return (
     <>
@@ -53,6 +66,7 @@ export function Orders({ cart }) {
         <div className="page-title">Your Orders</div>
 
         <div className="orders-grid">
+
           {orders.map((order) => {
             return (
               <div key={order.id} className="order-container">
@@ -111,11 +125,11 @@ export function Orders({ cart }) {
                         </div>
 
                         <div className="product-actions">
-                          <Link to="/tracking">
-                            <button className="track-package-button button-secondary">
+                       
+                            <button className="track-package-button button-secondary" onClick={() => handleTrack(order.id, orderproduct.product.id)} >
                               Track package
                             </button>
-                          </Link>
+                          
                         </div>
                       </Fragment>
                     )

@@ -1,9 +1,15 @@
 
-import axios from 'axios'
+
+
 import {useState } from 'react';
+import { ProductCard } from './showtick';
 
  export function HomeHTML({ product   }) {
    const [quantity , setQuantity] = useState(1);
+     
+
+ 
+   
    return (
               <div key={product.id} className="product-container"
                data-testid='product-container'
@@ -50,25 +56,21 @@ import {useState } from 'react';
                   </select>
                 </div>
 
-                <div className="product-spacer"></div>
+                <div className="product-spacer">
+                    
+                </div>
 
                 <div className="added-to-cart">
                   <img src="images/icons/checkmark.png" />
                   Added
                 </div>
 
-                <button className="add-to-cart-button button-primary"
-                data-testid='add-to-cart-button'
-                 onClick={ async()=>{
-                  await axios.post('/api/cart-Items',{
-                    productId:product.id,
-                    quantity:quantity 
-                  }
+                 <ProductCard productId={product.id} quantity={quantity}  />
+                  
+                  
+               
 
-                  )
-                }}>
-                  Add to Cart
-                </button>
+                  
               </div>
             )
 

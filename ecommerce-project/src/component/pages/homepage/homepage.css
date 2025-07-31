@@ -126,7 +126,7 @@
   margin-bottom: 17px;
 }
 
-.home-page .product-spacer {
+.home-page  {
   flex: 1;
 }
 
@@ -134,7 +134,7 @@
   color: rgb(25, 135, 84);
   font-size: 16px;
 
-  display: flex;
+  
   align-items: center;
   margin-bottom: 8px;
 
@@ -154,4 +154,9 @@
   padding: 8px;
   height: 34px;
   margin-top: 1px;
+}
+
+.product-spacer{
+  
+  height: 1px;
 }

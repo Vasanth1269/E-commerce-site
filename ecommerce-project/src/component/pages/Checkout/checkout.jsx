@@ -58,6 +58,7 @@ return (
       <div className="checkout-grid">
         <div className="order-summary">
           {cart.map((CartItem)=>{
+            
              const deleteItems = async () =>{
                      await axios.delete(`/api/cart-Items/${CartItem.productId}`)
     
@@ -70,6 +71,7 @@ return (
               <div key={CartItem.product.id} className="cart-item-container">
             <div className="delivery-date">
               Delivery date: {dayjs(selectdeliveryOption.estimatedDeliveryTimeMs).format("dddd MMMM D")}
+              
             </div>
 
             <div className="cart-item-details-grid">

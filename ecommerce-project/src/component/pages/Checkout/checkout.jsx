@@ -107,7 +107,7 @@ return (
                  
                     let Shppingprice = "FREE Shipping";
                     const UpdatadeliveryOptions =  async()=>{
-                    await  axios.put(`/api/cart-items/${CartItem.productId}`,{
+                    await  axios.put(`https://e-commerce-site-egre.onrender.com/api/cart-items/${CartItem.productId}`,{
                         deliveryOptionId:deliveryOption.id
                       })
                     }

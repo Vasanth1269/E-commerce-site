@@ -10,7 +10,7 @@ export function Orders({ cart }) {
   const [orders, setOrders] = useState([]);
   useEffect(() => {
     const getOrderDate = async () => {
-      const Response = await axios.get('/api/orders?expand=products')
+      const Response = await axios.get('https://e-commerce-site-egre.onrender.com/api/orders?expand=products')
       setOrders(Response.data)
 
     }
@@ -93,7 +93,7 @@ export function Orders({ cart }) {
                   {order.products.map((orderproduct) => {
 
                     const BacktoCart = async () => {
-                      await axios.post(`/api/cart-items`, {
+                      await axios.post(`https://e-commerce-site-egre.onrender.com/api/cart-items`, {
                         productId: orderproduct.product.id,
                         quantity: orderproduct.quantity
                       })

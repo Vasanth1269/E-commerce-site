@@ -14,7 +14,7 @@ export function HomePage({ cart , LoadingCart}) {
   useEffect(()=>{
        const getHomeData = async ()=>{
 
-  const Response  =  await axios ("/api/products") 
+  const Response  =  await axios ("https://e-commerce-site-egre.onrender.com/api/products") 
     setProducts(Response.data)
     }
      getHomeData ()

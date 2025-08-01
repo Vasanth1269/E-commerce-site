@@ -11,7 +11,7 @@ export function ProductCard({productId , quantity}) {
   
     setShowTick(true);
 
-       {await axios.post('/api/cart-Items',{
+       {await axios.post('https://e-commerce-site-egre.onrender.com/api/cart-Items',{
                     productId:productId,
                     quantity:quantity
                   })

@@ -11,7 +11,7 @@ function App() {
   const [cart , setCart] = useState([])
   function LoadingCart() {
       const getCartData = async ()=>{
-   const Response = await axios ("/api/cart-items?expand=product")
+   const Response = await axios ("https://e-commerce-site-egre.onrender.com/api/cart-items?expand=product")
       setCart(Response.data)
       }
      getCartData()

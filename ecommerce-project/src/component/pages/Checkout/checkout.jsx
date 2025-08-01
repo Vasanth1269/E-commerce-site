@@ -12,20 +12,20 @@ export function CheckOut({ cart }) {
   const [deliveryOptions , setDeliveryOptions] = useState([])
   const [paymentsummary , setPaymentsummary] = useState([])
  useEffect (() =>{
-   axios('/api/delivery-options?expand=estimatedDeliveryTime')
+   axios('https://e-commerce-site-egre.onrender.com/api/delivery-options?expand=estimatedDeliveryTime')
      .then ((Response)=>{
        setDeliveryOptions(Response.data)
      })
   
 
-         axios('/api/payment-summary')
+         axios('https://e-commerce-site-egre.onrender.com/api/payment-summary')
          .then ((Response)=>{
             setPaymentsummary(Response.data);
          })
  },[cart]);
   const Navigate = useNavigate()
  const PlaceOrder = async()=> {
-    await axios.post('/api/orders')
+    await axios.post('https://e-commerce-site-egre.onrender.com/api/orders')
       Navigate('/orders');
   }
   

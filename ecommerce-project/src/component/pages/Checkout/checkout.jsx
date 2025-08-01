@@ -60,7 +60,7 @@ return (
           {cart.map((CartItem)=>{
             
              const deleteItems = async () =>{
-                     await axios.delete(`/api/cart-Items/${CartItem.productId}`)
+                     await axios.delete(`https://e-commerce-site-egre.onrender.com/api/cart-Items/${CartItem.productId}`)
     
    }
               const selectdeliveryOption = deliveryOptions.find((deliveryOption)=>{

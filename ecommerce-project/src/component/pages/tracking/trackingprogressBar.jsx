@@ -53,7 +53,7 @@ export function Trackingprogress({ orderDate, deliverydate }) {
             height: "100%",
             backgroundColor: "rgb(25, 135, 84)",
             borderRadius: "50px",
-            width: `${progressPercentage}%`,
+            width: `${Math.min(progressPercentage + 10, 100)}%`,
             transition: "width 0.5s ease-in-out",
           }}
         ></div>

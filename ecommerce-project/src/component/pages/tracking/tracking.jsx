@@ -15,7 +15,7 @@ export function TrackingPage({cart}) {
   const { orderId, productId } = location.state;
   useEffect(() => {
 
-    axios.get('/api/orders?expand=products')
+    axios.get('https://e-commerce-site-egre.onrender.com/api/orders?expand=products')
       .then((Response) => {
         setTracking(Response.data)
 
@@ -60,8 +60,8 @@ export function TrackingPage({cart}) {
 
       <div className="tracking-page">
         {tracking.map((trackproduct) => {
-          console.log(trackproduct.id)
-
+                  
+        
           const isCorrectOrder = trackproduct.id === orderId;
           const matchedProduct = trackproduct.products.find(product => product.productId === productId);
         

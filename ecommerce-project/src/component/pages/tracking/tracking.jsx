@@ -60,6 +60,7 @@ export function TrackingPage({cart}) {
 
       <div className="tracking-page">
         {tracking.map((trackproduct) => {
+          console.log(trackproduct.id)
 
           const isCorrectOrder = trackproduct.id === orderId;
           const matchedProduct = trackproduct.products.find(product => product.productId === productId);
